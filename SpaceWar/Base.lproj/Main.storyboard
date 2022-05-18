@@ -15,16 +15,32 @@
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KTG-A8-C8X">
+                                <rect key="frame" x="341" y="50" width="66" height="54"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="pauseButton"/>
+                                <connections>
+                                    <action selector="pause:" destination="BV1-FR-VrT" eventType="touchUpInside" id="tYn-15-aXW"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="KTG-A8-C8X" firstAttribute="top" secondItem="4qk-I5-YsI" secondAttribute="top" constant="6" id="diw-hp-sAt"/>
+                            <constraint firstItem="4qk-I5-YsI" firstAttribute="trailing" secondItem="KTG-A8-C8X" secondAttribute="trailing" constant="7" id="kAT-Vh-Yjg"/>
+                            <constraint firstItem="KTG-A8-C8X" firstAttribute="leading" secondItem="4qk-I5-YsI" secondAttribute="leading" constant="341" id="uME-4U-77a"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="84"/>
+            <point key="canvasLocation" x="131.8840579710145" y="83.705357142857139"/>
         </scene>
     </scenes>
     <resources>
+        <image name="pauseButton" width="40" height="40"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

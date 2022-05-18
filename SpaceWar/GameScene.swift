@@ -14,20 +14,65 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let spaceShipCategory: UInt32 = 0x1 << 0
     let asteroidCategory: UInt32 = 0x1 << 1
     var spaceShip: SKSpriteNode!
+    var score = 0
+    var scoreLabel: SKLabelNode!
+    var spaceBackground: SKSpriteNode!
+    var asteroidLayer: SKNode!
+    var gameIsPaused: Bool = false
+    var starsLayer: SKNode!
     
-    var score: 0
-    var scoreLabel: SKLabelNode
+    
+    func pauseTheGame() {
+        gameIsPaused = true
+        self.asteroidLayer.isPaused = true
+        physicsWorld.speed = 0
+        starsLayer.isPaused = true
+    }
+    
+    func pauseButtonPressed(sender: AnyObject) {
+        !gameIsPaused ? pauseTheGame() : continueGame()
+    }
+    
+    func continueGame() {
+        gameIsPaused = false
+        self.asteroidLayer.isPaused = false
+        physicsWorld.speed = 1
+        starsLayer.isPaused = false
+    }
+    
+    func resetGame() {
+        score = 0
+        scoreLabel.text = "Score: \(score)"
+        gameIsPaused = false
+        self.asteroidLayer.isPaused = false
+        physicsWorld.speed = 1
+        starsLayer.isPaused = false
+    }
     
     
     override func didMove(to view: SKView) {
-  
+        
         physicsWorld.contactDelegate = self
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -0.8)
         
         scene?.size = UIScreen.main.bounds.size
         
-        let spaceBackground = SKSpriteNode(imageNamed: "spaceBackground")
+        spaceBackground = SKSpriteNode(imageNamed: "spaceBackground")
+        spaceBackground.size = CGSize(width: self.size.width + 50, height: self.size.width)
         addChild(spaceBackground)
+        
+        let starsPath = Bundle.main.path(forResource: "Stars", ofType: "sks")
+        let starsEmitter = NSKeyedUnarchiver.unarchiveObject(withFile: starsPath!) as? SKEmitterNode
+        
+        starsEmitter?.zPosition = 1
+        starsEmitter?.position = CGPoint(x: frame.midX, y: frame.height / 3)
+        starsEmitter?.particlePositionRange.dx = frame.width
+        starsEmitter?.advanceSimulationTime(10)
+        
+        starsLayer = SKNode()
+        starsLayer.zPosition = 1
+        addChild(starsLayer)
+        starsLayer.addChild(starsEmitter!)
         
         let width = UIScreen.main.bounds.width*2
         let heihgt = UIScreen.main.bounds.height*2
@@ -42,66 +87,87 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spaceShip.physicsBody?.collisionBitMask = asteroidCategory
         spaceShip.physicsBody?.contactTestBitMask = asteroidCategory
         
+        let colorAction1 = SKAction.colorize(with: .yellow, colorBlendFactor: 1, duration: 1)
+        let colorAction2 = SKAction.colorize(with: .purple, colorBlendFactor: 0, duration: 1)
+        
+        let colorSequence = SKAction.sequence([colorAction1, colorAction2])
+        let colorActionRepeat = SKAction.repeatForever(colorSequence)
+        spaceShip.run(colorActionRepeat)
+        
         addChild(spaceShip)
+        
+        asteroidLayer = SKNode()
+        asteroidLayer.zPosition = 2
+        addChild(asteroidLayer)
         
         let asteroidCreate = SKAction.run {
             let asteroid = self.createAsteroid()
-            self.addChild(asteroid)
+            self.asteroidLayer.addChild(asteroid)
+            asteroid.zPosition = 2
         }
-        let asteroidPerSecond: Double = 2.0
-        let asteroidCreateDelay = SKAction.wait(forDuration: 1.0 / asteroidPerSecond, withRange: 0.5)
+        let asteroidPerSecond: Double = 5
+        let asteroidCreateDelay = SKAction.wait(forDuration: TimeInterval(10) / asteroidPerSecond, withRange: TimeInterval (0.5))
         let asteroidSequenseAction = SKAction.sequence([asteroidCreate, asteroidCreateDelay])
         let asteroidRunAction = SKAction.repeatForever(asteroidSequenseAction)
-    
-        run(asteroidRunAction)
+        
+        self.asteroidLayer.run(asteroidRunAction)
         
         scoreLabel = SKLabelNode(text: "Score: \(score)")
-        scoreLabel.position = CGPoint(x: frame.size.width / 2, y: frame.size.height - scoreLabel.calculateAccumulatedFrame().height - 15)
+        scoreLabel.position = CGPoint(x: 0, y: 376)
         
         addChild(scoreLabel)
+        
+        spaceBackground.zPosition = 0
+        spaceShip.zPosition = 1
+        scoreLabel.zPosition = 3
         
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        if let touch = touches.first {
-            let touchLocation = touch.location(in: self)
-            
-            let distance = distanceCalculate(a: spaceShip.position, b: touchLocation)
-            let speed: CGFloat = 500
-            let time = timeToInterval(distance: distance, speed: speed)
-            
-            let moveAction = SKAction.move(to: touchLocation, duration: time)
-            print(distance, time)
-            spaceShip.run(moveAction)
+        if !gameIsPaused {
+            if let touch = touches.first {
+                
+                let touchLocation = touch.location(in: self)
+                
+                let distance = distanceCalculate(a: spaceShip.position, b: touchLocation)
+                let speed: CGFloat = 500
+                let time = timeToInterval(distance: distance, speed: speed)
+                
+                let moveAction = SKAction.move(to: touchLocation, duration: time)
+                moveAction.timingMode = SKActionTimingMode.easeInEaseOut
+                
+                print(distance, time)
+                spaceShip.run(moveAction)
+                
+                let bgMoveAction = SKAction.move(to: CGPoint(x: -touchLocation.x / 20, y: -touchLocation.y / 20), duration: time)
+                spaceBackground.run(bgMoveAction)
+            }
         }
     }
     
     
     func createAsteroid() -> SKSpriteNode {
-    
+        
         let asteroid = SKSpriteNode(imageNamed: "asteroidImg")
         
-        let randomScale = CGFloat(GKRandomSource.sharedRandom().nextInt(upperBound: 6)) / 10
-        asteroid.xScale = randomScale
-        asteroid.yScale = randomScale
+        
         
         asteroid.position.x = CGFloat(GKRandomSource.sharedRandom().nextInt(upperBound: 6))
-        asteroid.position.y = frame.size.height/2 + asteroid.size.width
+        asteroid.position.y = frame.size.height + asteroid.size.width
         
         asteroid.physicsBody = SKPhysicsBody(texture: asteroid.texture!, size: asteroid.size)
         asteroid.name = "asteroid"
         
         asteroid.physicsBody?.categoryBitMask = asteroidCategory
+        asteroid.physicsBody?.collisionBitMask = spaceShipCategory | asteroidCategory
         asteroid.physicsBody?.collisionBitMask = spaceShipCategory
-        asteroid.physicsBody?.collisionBitMask = spaceShipCategory
-        return asteroid
-    }
-    
-    override func update(_ currentTime: TimeInterval) {
-        let asteroid = createAsteroid()
-        addChild(asteroid)
         
+        
+        let asteroidSpeedX: CGFloat = 100
+        asteroid.physicsBody?.angularVelocity = CGFloat(drand48() * 2 - 1) * 3
+        asteroid.physicsBody?.velocity.dx = CGFloat(drand48() * 2 - 1) * asteroidSpeedX
+        
+        return asteroid
     }
     
     
@@ -117,16 +183,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func didSimulatePhysics() {
-        enumerateChildNodes(withName: "asteroid") { asteroid, stop in
+        asteroidLayer.enumerateChildNodes(withName: "asteroid") { asteroid, stop in
             let hightScreen = UIScreen.main.bounds.height
             if asteroid.position.y < -hightScreen {
                 asteroid.removeFromParent()
+                self.score = self.score + 1
+                self.scoreLabel.text = "Score: \(self.score)"
             }
         }
     }
     
     
     func didBegin(_ contact: SKPhysicsContact) {
+        if contact.bodyA.categoryBitMask == spaceShipCategory && contact.bodyB.categoryBitMask == asteroidCategory || contact.bodyB.categoryBitMask == spaceShipCategory && contact.bodyA.categoryBitMask == asteroidCategory {
+            self.score = 0
+            self.scoreLabel.text = "Score: \(self.score)"
+        }
+        
+        
         print("Contact!")
     }
     
@@ -134,5 +208,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func didEnd(_ contact: SKPhysicsContact) {
         
     }
-
+    
 }
