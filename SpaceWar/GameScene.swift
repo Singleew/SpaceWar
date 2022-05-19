@@ -21,6 +21,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var gameIsPaused: Bool = false
     var starsLayer: SKNode!
     
+    var spaceShipLayer: SKNode!
+    
     
     func pauseTheGame() {
         gameIsPaused = true
@@ -94,7 +96,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let colorActionRepeat = SKAction.repeatForever(colorSequence)
         spaceShip.run(colorActionRepeat)
         
-        addChild(spaceShip)
+        //addChild(spaceShip)
+        
+        spaceShipLayer = SKNode()
+        spaceShipLayer.addChild(spaceShip)
+        spaceShipLayer.zPosition = 3
+        spaceShip.zPosition = 1
+        spaceShipLayer.position = CGPoint(x: 0, y: 0)
+        addChild(spaceShipLayer)
+        
+        
+        let firePath = Bundle.main.path(forResource: "Fire", ofType: "sks")
+        let fireEmitter = NSKeyedUnarchiver.unarchiveObject(withFile: firePath!) as? SKEmitterNode
+        fireEmitter?.zPosition = 0
+        fireEmitter?.position.y = -60
+        fireEmitter?.targetNode = self
+        spaceShipLayer.addChild(fireEmitter!)
+        
         
         asteroidLayer = SKNode()
         asteroidLayer.zPosition = 2
@@ -118,7 +136,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(scoreLabel)
         
         spaceBackground.zPosition = 0
-        spaceShip.zPosition = 1
+        //spaceShip.zPosition = 1
         scoreLabel.zPosition = 3
         
     }
@@ -137,7 +155,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 moveAction.timingMode = SKActionTimingMode.easeInEaseOut
                 
                 print(distance, time)
-                spaceShip.run(moveAction)
+                spaceShipLayer.run(moveAction)
                 
                 let bgMoveAction = SKAction.move(to: CGPoint(x: -touchLocation.x / 20, y: -touchLocation.y / 20), duration: time)
                 spaceBackground.run(bgMoveAction)
