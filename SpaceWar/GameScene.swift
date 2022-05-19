@@ -7,6 +7,7 @@
 
 import SpriteKit
 import GameplayKit
+import AVFoundation
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -20,8 +21,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var asteroidLayer: SKNode!
     var gameIsPaused: Bool = false
     var starsLayer: SKNode!
+    var musicPlayer: AVAudioPlayer!
+    var soundIsOn: Bool = true
     
     var spaceShipLayer: SKNode!
+    
+    func soundOnOff (sender: UISwitch) {
+        if !sender.isOn {
+            musicPlayer.pause()
+            soundIsOn = false
+        } else {
+            playMusic()
+        }
+        
+    }
     
     
     func pauseTheGame() {
@@ -29,17 +42,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.asteroidLayer.isPaused = true
         physicsWorld.speed = 0
         starsLayer.isPaused = true
+        musicPlayer.pause()
+        
     }
     
-    func pauseButtonPressed(sender: AnyObject) {
-        !gameIsPaused ? pauseTheGame() : continueGame()
-    }
     
     func continueGame() {
         gameIsPaused = false
         self.asteroidLayer.isPaused = false
         physicsWorld.speed = 1
         starsLayer.isPaused = false
+        musicPlayer.play()
     }
     
     func resetGame() {
@@ -124,7 +137,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             asteroid.zPosition = 2
         }
         let asteroidPerSecond: Double = 5
-        let asteroidCreateDelay = SKAction.wait(forDuration: TimeInterval(10) / asteroidPerSecond, withRange: TimeInterval (0.5))
+        let asteroidCreateDelay = SKAction.wait(forDuration: TimeInterval(1) / asteroidPerSecond, withRange: TimeInterval (0.5))
         let asteroidSequenseAction = SKAction.sequence([asteroidCreate, asteroidCreateDelay])
         let asteroidRunAction = SKAction.repeatForever(asteroidSequenseAction)
         
@@ -138,6 +151,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spaceBackground.zPosition = 0
         //spaceShip.zPosition = 1
         scoreLabel.zPosition = 3
+        
+        playMusic()
+    }
+    
+    func playMusic() {
+        let musicPath = Bundle.main.url(forResource: "musicGame", withExtension: "mp3")!
+        musicPlayer = try! AVAudioPlayer(contentsOf: musicPath, fileTypeHint: nil)
+        if soundIsOn {
+        musicPlayer.play()
+        musicPlayer.numberOfLoops = -1
+            musicPlayer.volume = 0.2
+            
+        } else {}
         
     }
     
@@ -217,7 +243,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.score = 0
             self.scoreLabel.text = "Score: \(self.score)"
         }
-        
+        if soundIsOn {
+        let hitSoundAction = SKAction.playSoundFileNamed("kick", waitForCompletion: true)
+            run(hitSoundAction)} else {
+            }
         
         print("Contact!")
     }

@@ -11,10 +11,18 @@ import GameplayKit
 
 class GameViewController: UIViewController {
     
+    
+    @IBOutlet weak var pauseButton: UIButton!
+    
     var gameScene: GameScene!
-
+    var pauseViewController: PauseViewController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        pauseViewController = storyboard?.instantiateViewController(withIdentifier: "PauseViewController") as? PauseViewController
+        
+        pauseViewController.delegate = self
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
@@ -33,11 +41,11 @@ class GameViewController: UIViewController {
             view.showsNodeCount = true
         }
     }
-
+    
     override var shouldAutorotate: Bool {
         return true
     }
-
+    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return .allButUpsideDown
@@ -45,13 +53,61 @@ class GameViewController: UIViewController {
             return .all
         }
     }
-
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
     
+    func showPauseScreen(_ viewController: PauseViewController) {
+        addChild(viewController)
+        view.addSubview(viewController.view)
+        viewController.view.frame = view.bounds
+        
+        viewController.view.alpha = 0
+        UIView.animate(withDuration: 0.5) {
+            viewController.view.alpha = 1
+        }
+        
+    }
+    
+    func hidePauseScreen(viewController: PauseViewController) {
+        pauseButton.isHidden = false
+        viewController.willMove(toParent: nil)
+        viewController.removeFromParent()
+        
+        viewController.view.alpha = 1
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            viewController.view.alpha = 0
+        }) { completed in
+            viewController.view.removeFromSuperview()
+        }
+        
+    }
+    
+    
     @IBAction func pause(_ sender: UIButton) {
-        gameScene.pauseButtonPressed(sender: sender)
+        sender.isHidden = true
+        gameScene.pauseTheGame()
+        showPauseScreen(pauseViewController)
+    }
+    
+    func soundOnOff(viewController: PauseViewController, sender: UISwitch) {
+        gameScene.soundOnOff(sender: sender)
+    
+    
+}
+}
+
+extension GameViewController: PauseViewControllerDelegate {
+    
+    func pauseViewControllerPlayButton(_ viewController: PauseViewController) {
+        hidePauseScreen(viewController: pauseViewController)
+        gameScene.continueGame()
+    }
+    
+    func soundOnOf(_ viewController: PauseViewController, sender: UISwitch) {
+        soundOnOff(viewController: pauseViewController, sender: sender)
     }
     
     
