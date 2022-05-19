@@ -22,28 +22,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var gameIsPaused: Bool = false
     var starsLayer: SKNode!
     var musicPlayer: AVAudioPlayer!
+    var spaceShipLayer: SKNode!
     var soundIsOn: Bool = true
     
-    var spaceShipLayer: SKNode!
     
-    func soundOnOff (sender: UISwitch) {
-        if !sender.isOn {
-            musicPlayer.pause()
-            soundIsOn = false
-        } else {
+    func soundOnOff () {
+        if soundIsOn {
             playMusic()
+        } else {
+            musicPlayer.pause()
         }
-        
     }
     
     
     func pauseTheGame() {
+        musicPlayer.stop()
         gameIsPaused = true
         self.asteroidLayer.isPaused = true
         physicsWorld.speed = 0
         starsLayer.isPaused = true
-        musicPlayer.pause()
-        
     }
     
     
@@ -52,7 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.asteroidLayer.isPaused = false
         physicsWorld.speed = 1
         starsLayer.isPaused = false
-        musicPlayer.play()
+        soundOnOff()
     }
     
     func resetGame() {
@@ -156,16 +153,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func playMusic() {
-        let musicPath = Bundle.main.url(forResource: "musicGame", withExtension: "mp3")!
-        musicPlayer = try! AVAudioPlayer(contentsOf: musicPath, fileTypeHint: nil)
-        if soundIsOn {
-        musicPlayer.play()
-        musicPlayer.numberOfLoops = -1
-            musicPlayer.volume = 0.2
-            
-        } else {}
-        
+        if soundIsOn && !gameIsPaused {
+            let musicPath = Bundle.main.url(forResource: "musicGame", withExtension: "mp3")!
+            musicPlayer = try! AVAudioPlayer(contentsOf: musicPath, fileTypeHint: nil)
+            musicPlayer.play()
+            musicPlayer.numberOfLoops = -1
+            musicPlayer.volume = 0.2 }
     }
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !gameIsPaused {
@@ -244,7 +239,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.scoreLabel.text = "Score: \(self.score)"
         }
         if soundIsOn {
-        let hitSoundAction = SKAction.playSoundFileNamed("kick", waitForCompletion: true)
+            let hitSoundAction = SKAction.playSoundFileNamed("kick", waitForCompletion: true)
             run(hitSoundAction)} else {
             }
         

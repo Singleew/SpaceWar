@@ -123,6 +123,96 @@
             </objects>
             <point key="canvasLocation" x="215.94202898550725" y="82.366071428571431"/>
         </scene>
+        <!--Game Over View Controller-->
+        <scene sceneID="eXL-0k-Cen">
+            <objects>
+                <viewController storyboardIdentifier="gameOverViewController" id="8fq-PK-inS" customClass="GameOverViewController" customModule="SpaceWar" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Q8C-pl-5Ac">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="45" translatesAutoresizingMaskIntoConstraints="NO" id="xSg-qa-SJ2">
+                                <rect key="frame" x="86.5" y="395" width="241" height="327"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="34" translatesAutoresizingMaskIntoConstraints="NO" id="N3M-EH-6dX">
+                                        <rect key="frame" x="0.0" y="0.0" width="241" height="48"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You scores:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5GO-XL-zgE">
+                                                <rect key="frame" x="0.0" y="0.0" width="144.5" height="48"/>
+                                                <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="30"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rr9-aT-fCh">
+                                                <rect key="frame" x="178.5" y="0.0" width="62.5" height="48"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eP0-aG-2n2">
+                                        <rect key="frame" x="76.5" y="93" width="88" height="48"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Replay">
+                                            <fontDescription key="titleFontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="21"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="resetButton:" destination="8fq-PK-inS" eventType="touchUpInside" id="Dtt-Dz-poH"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gTc-O0-uTD">
+                                        <rect key="frame" x="81" y="186" width="79" height="48"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Liders">
+                                            <fontDescription key="titleFontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="21"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="lidersButton:" destination="8fq-PK-inS" eventType="touchUpInside" id="ksi-3B-K9Z"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Xx-cU-BOg">
+                                        <rect key="frame" x="84" y="279" width="73.5" height="48"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Menu">
+                                            <fontDescription key="titleFontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="21"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="menuButton:" destination="8fq-PK-inS" eventType="touchUpInside" id="rXb-A7-eLS"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GAME OVER" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="27W-gH-2FV">
+                                <rect key="frame" x="54" y="265" width="306.5" height="90"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="GbN-dc-KV3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="50"/>
+                                <color key="textColor" systemColor="systemRedColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="a9N-ra-SwU"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.921875" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="xSg-qa-SJ2" firstAttribute="centerX" secondItem="a9N-ra-SwU" secondAttribute="centerX" id="6r4-O4-w6c"/>
+                            <constraint firstItem="27W-gH-2FV" firstAttribute="centerX" secondItem="a9N-ra-SwU" secondAttribute="centerX" id="Hez-jG-XNW"/>
+                            <constraint firstItem="xSg-qa-SJ2" firstAttribute="top" secondItem="27W-gH-2FV" secondAttribute="bottom" constant="40" id="gpI-sq-2tj"/>
+                            <constraint firstItem="27W-gH-2FV" firstAttribute="top" secondItem="a9N-ra-SwU" secondAttribute="top" constant="221" id="j6g-RN-3v7"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="scoreLabel" destination="Rr9-aT-fCh" id="Qgf-ji-NYz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Kz-EH-elb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1041" y="83"/>
+        </scene>
     </scenes>
     <resources>
         <image name="cart" width="67" height="67"/>
@@ -132,6 +222,9 @@
         <image name="startButton" width="133.5" height="133.5"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tintColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

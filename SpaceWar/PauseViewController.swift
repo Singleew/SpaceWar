@@ -10,7 +10,7 @@ import UIKit
 
 protocol PauseViewControllerDelegate {
     func pauseViewControllerPlayButton (_ viewController: PauseViewController)
-    func soundOnOf(_ viewController: PauseViewController, sender: UISwitch)
+    func soundOnOf(_ viewController: PauseViewController)
 }
 
 class PauseViewController: UIViewController {
@@ -41,7 +41,7 @@ class PauseViewController: UIViewController {
     
     @IBAction func soundOnOFF(_ sender: UISwitch) {
         
-        delegate.soundOnOf(self, sender: sender)
+        delegate.soundOnOf(self)
     }
     
     

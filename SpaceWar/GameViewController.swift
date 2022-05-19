@@ -16,11 +16,14 @@ class GameViewController: UIViewController {
     
     var gameScene: GameScene!
     var pauseViewController: PauseViewController!
+    var gameOverViewController: GameOverViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         pauseViewController = storyboard?.instantiateViewController(withIdentifier: "PauseViewController") as? PauseViewController
+        
+        gameOverViewController = storyboard?.instantiateViewController(withIdentifier: "gameOverViewController") as? GameOverViewController
         
         pauseViewController.delegate = self
         
@@ -70,6 +73,19 @@ class GameViewController: UIViewController {
         
     }
     
+    func showGameOverScreen(_ viewController: GameOverViewController) {
+        addChild(viewController)
+        view.addSubview(viewController.view)
+        viewController.view.frame = view.bounds
+        
+        viewController.view.alpha = 0
+        UIView.animate(withDuration: 0.5) {
+            viewController.view.alpha = 1
+        }
+        
+    }
+    
+    
     func hidePauseScreen(viewController: PauseViewController) {
         pauseButton.isHidden = false
         viewController.willMove(toParent: nil)
@@ -92,8 +108,16 @@ class GameViewController: UIViewController {
         showPauseScreen(pauseViewController)
     }
     
-    func soundOnOff(viewController: PauseViewController, sender: UISwitch) {
-        gameScene.soundOnOff(sender: sender)
+  
+    @IBAction func stop(_ sender: UIButton) {
+        sender.isHidden = true
+        gameScene.pauseTheGame()
+        showGameOverScreen(gameOverViewController)
+    }
+    
+    func soundOnOff(viewController: PauseViewController) {
+        gameScene.soundIsOn = !gameScene.soundIsOn
+        gameScene.soundOnOff()
     
     
 }
@@ -106,8 +130,8 @@ extension GameViewController: PauseViewControllerDelegate {
         gameScene.continueGame()
     }
     
-    func soundOnOf(_ viewController: PauseViewController, sender: UISwitch) {
-        soundOnOff(viewController: pauseViewController, sender: sender)
+    func soundOnOf(_ viewController: PauseViewController) {
+        soundOnOff(viewController: pauseViewController)
     }
     
     
