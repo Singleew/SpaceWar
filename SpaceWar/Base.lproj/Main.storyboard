@@ -17,23 +17,42 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KTG-A8-C8X">
-                                <rect key="frame" x="341" y="50" width="66" height="54"/>
+                                <rect key="frame" x="341" y="50" width="66" height="67"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="pauseButton"/>
+                                <buttonConfiguration key="configuration" style="plain" image="pause-2" imagePadding="0.0"/>
                                 <connections>
                                     <action selector="pause:" destination="BV1-FR-VrT" eventType="touchUpInside" id="tYn-15-aXW"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hu8-Of-2o5">
+                                <rect key="frame" x="13" y="58" width="99" height="51"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="FINISH" cornerStyle="capsule">
+                                    <backgroundConfiguration key="background" strokeWidth="5" strokeOutset="-2">
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="strokeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </backgroundConfiguration>
+                                    <fontDescription key="titleFontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="23"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="stop:" destination="BV1-FR-VrT" eventType="touchUpInside" id="zDY-08-FQ6"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="labelColor"/>
                         <constraints>
+                            <constraint firstItem="Hu8-Of-2o5" firstAttribute="centerY" secondItem="KTG-A8-C8X" secondAttribute="centerY" id="VUS-eW-yqc"/>
+                            <constraint firstItem="KTG-A8-C8X" firstAttribute="leading" secondItem="Hu8-Of-2o5" secondAttribute="trailing" constant="229" id="Vdm-aG-FxQ"/>
                             <constraint firstItem="KTG-A8-C8X" firstAttribute="top" secondItem="4qk-I5-YsI" secondAttribute="top" constant="6" id="diw-hp-sAt"/>
+                            <constraint firstItem="Hu8-Of-2o5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4qk-I5-YsI" secondAttribute="leading" id="fEO-cl-DY4"/>
                             <constraint firstItem="4qk-I5-YsI" firstAttribute="trailing" secondItem="KTG-A8-C8X" secondAttribute="trailing" constant="7" id="kAT-Vh-Yjg"/>
                             <constraint firstItem="KTG-A8-C8X" firstAttribute="leading" secondItem="4qk-I5-YsI" secondAttribute="leading" constant="341" id="uME-4U-77a"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="finishButton" destination="Hu8-Of-2o5" id="X0P-aa-Y1I"/>
                         <outlet property="pauseButton" destination="KTG-A8-C8X" id="Z7X-41-DgI"/>
                     </connections>
                 </viewController>
@@ -132,41 +151,50 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="45" translatesAutoresizingMaskIntoConstraints="NO" id="xSg-qa-SJ2">
-                                <rect key="frame" x="86.5" y="395" width="241" height="327"/>
+                                <rect key="frame" x="75" y="395" width="264.5" height="330.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="34" translatesAutoresizingMaskIntoConstraints="NO" id="N3M-EH-6dX">
-                                        <rect key="frame" x="0.0" y="0.0" width="241" height="48"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="264.5" height="51.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You scores:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5GO-XL-zgE">
-                                                <rect key="frame" x="0.0" y="0.0" width="144.5" height="48"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="144.5" height="51.5"/>
                                                 <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="30"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rr9-aT-fCh">
-                                                <rect key="frame" x="178.5" y="0.0" width="62.5" height="48"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                                <rect key="frame" x="178.5" y="0.0" width="86" height="51.5"/>
+                                                <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="32"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="5GO-XL-zgE" firstAttribute="centerY" secondItem="Rr9-aT-fCh" secondAttribute="centerY" id="Ad7-Yr-ojS"/>
+                                        </constraints>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eP0-aG-2n2">
-                                        <rect key="frame" x="76.5" y="93" width="88" height="48"/>
+                                        <rect key="frame" x="88" y="96.5" width="88" height="48"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Replay">
+                                        <buttonConfiguration key="configuration" style="plain" title="Replay" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background" strokeWidth="3" strokeOutset="0.0">
+                                                <color key="strokeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
                                             <fontDescription key="titleFontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="21"/>
                                         </buttonConfiguration>
                                         <connections>
-                                            <action selector="resetButton:" destination="8fq-PK-inS" eventType="touchUpInside" id="Dtt-Dz-poH"/>
+                                            <action selector="replayButton:" destination="8fq-PK-inS" eventType="touchUpInside" id="QOH-6L-2mT"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gTc-O0-uTD">
-                                        <rect key="frame" x="81" y="186" width="79" height="48"/>
+                                        <rect key="frame" x="92.5" y="189.5" width="79" height="48"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Liders">
+                                        <buttonConfiguration key="configuration" style="plain" title="Liders" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background" strokeWidth="3" strokeOutset="0.0">
+                                                <color key="strokeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
                                             <fontDescription key="titleFontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="21"/>
                                         </buttonConfiguration>
                                         <connections>
@@ -174,10 +202,13 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Xx-cU-BOg">
-                                        <rect key="frame" x="84" y="279" width="73.5" height="48"/>
+                                        <rect key="frame" x="95.5" y="282.5" width="73.5" height="48"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Menu">
+                                        <buttonConfiguration key="configuration" style="plain" title="Menu" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background" strokeWidth="3" strokeOutset="0.0">
+                                                <color key="strokeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
                                             <fontDescription key="titleFontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="21"/>
                                         </buttonConfiguration>
                                         <connections>
@@ -218,10 +249,10 @@
         <image name="cart" width="67" height="67"/>
         <image name="menu" width="67" height="67"/>
         <image name="pause" width="512" height="512"/>
-        <image name="pauseButton" width="40" height="40"/>
+        <image name="pause-2" width="53" height="53"/>
         <image name="startButton" width="133.5" height="133.5"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -133,7 +133,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.asteroidLayer.addChild(asteroid)
             asteroid.zPosition = 2
         }
-        let asteroidPerSecond: Double = 5
+        let asteroidPerSecond: Double = 3
         let asteroidCreateDelay = SKAction.wait(forDuration: TimeInterval(1) / asteroidPerSecond, withRange: TimeInterval (0.5))
         let asteroidSequenseAction = SKAction.sequence([asteroidCreate, asteroidCreateDelay])
         let asteroidRunAction = SKAction.repeatForever(asteroidSequenseAction)

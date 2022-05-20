@@ -13,6 +13,8 @@ class GameViewController: UIViewController {
     
     
     @IBOutlet weak var pauseButton: UIButton!
+    @IBOutlet weak var finishButton: UIButton!
+    
     
     var gameScene: GameScene!
     var pauseViewController: PauseViewController!
@@ -26,6 +28,7 @@ class GameViewController: UIViewController {
         gameOverViewController = storyboard?.instantiateViewController(withIdentifier: "gameOverViewController") as? GameOverViewController
         
         pauseViewController.delegate = self
+        gameOverViewController.delegate = self
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
@@ -62,6 +65,8 @@ class GameViewController: UIViewController {
     }
     
     func showPauseScreen(_ viewController: PauseViewController) {
+        pauseButton.isHidden = true
+        finishButton.isHidden = true
         addChild(viewController)
         view.addSubview(viewController.view)
         viewController.view.frame = view.bounds
@@ -74,6 +79,7 @@ class GameViewController: UIViewController {
     }
     
     func showGameOverScreen(_ viewController: GameOverViewController) {
+        pauseButton.isHidden = true
         addChild(viewController)
         view.addSubview(viewController.view)
         viewController.view.frame = view.bounds
@@ -86,7 +92,8 @@ class GameViewController: UIViewController {
     }
     
     
-    func hidePauseScreen(viewController: PauseViewController) {
+    func hidePauseScreen(viewController: UIViewController) {
+        finishButton.isHidden = false
         pauseButton.isHidden = false
         viewController.willMove(toParent: nil)
         viewController.removeFromParent()
@@ -113,7 +120,9 @@ class GameViewController: UIViewController {
         sender.isHidden = true
         gameScene.pauseTheGame()
         showGameOverScreen(gameOverViewController)
+        gameOverViewController.scoreLabel.text = String(gameScene.score)
     }
+    
     
     func soundOnOff(viewController: PauseViewController) {
         gameScene.soundIsOn = !gameScene.soundIsOn
@@ -133,6 +142,24 @@ extension GameViewController: PauseViewControllerDelegate {
     func soundOnOf(_ viewController: PauseViewController) {
         soundOnOff(viewController: pauseViewController)
     }
+    
+    
+}
+
+extension GameViewController: GameOverViewControllerDelegate {
+ 
+    
+    func gameOverViewControllerReplayButton(_ viewController: GameOverViewController) {
+        hidePauseScreen(viewController: gameOverViewController)
+        gameScene.score = 0
+        gameScene.continueGame()
+    }
+    
+    func gameOverViewControllerMenuButton(_viewController: GameOverViewController) {
+        hidePauseScreen(viewController: gameOverViewController)
+        showPauseScreen(pauseViewController)
+    }
+    
     
     
 }
